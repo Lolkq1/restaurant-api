@@ -1,0 +1,6 @@
+package com.example.demo;
+
+import jakarta.annotation.Nullable;
+
+public record UserDTO(@Nullable Long id, String name, String email) {
+}
