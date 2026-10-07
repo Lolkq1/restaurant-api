@@ -1,19 +1,14 @@
-package com.example.demo;
+package com.example.demo.Controllers;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpServletResponseWrapper;
+import com.example.demo.LoginDTO;
+import com.example.demo.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 @RestController("/users")

@@ -56,14 +56,13 @@ public class UserService {
         return userRepo.findById(id);
     }
 
-    public boolean updateUsername(Long id, String newname) {
+    public void updateUsername(Long id, String newname) throws NullPointerException{
         Optional<User> user = userRepo.findById(id);
         if (user.isEmpty()) {
-            return false;
+            throw new NullPointerException();
         }
         user.get().setName(newname);
         userRepo.save(user.get());
-        return true;
     }
 
 

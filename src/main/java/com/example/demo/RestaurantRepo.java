@@ -13,5 +13,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public interface RestaurantRepo extends JpaRepository<Restaurant, String> {
-    public Optional<Restaurant> findByOwnerId(Long id);
+    public Optional<Restaurant> findAllByOwnerId(Long id);
+    public Optional<Restaurant> findByCnpj(String cnpj);
 }

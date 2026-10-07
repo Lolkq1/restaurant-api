@@ -14,7 +14,10 @@ import java.util.List;
 public class Restaurant {
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @Setter
+    @Getter
     private User owner;
+
 
     @Id
     @CNPJ(message = "Invalid CNPJ.")
@@ -25,6 +28,9 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RTable> tables = new ArrayList<>();
 
+    @Getter
+    @Setter
+    private String name;
 
     @Setter
     @Getter
@@ -34,7 +40,7 @@ public class Restaurant {
     @Getter
     @Column(length = 11)
     @Size(max = 11, min = 11, message = "Invalid length.")
-    private String phone;
+    private String phone_number;
 
     @Setter
     @Getter
