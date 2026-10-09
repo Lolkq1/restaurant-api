@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.Entities.User;
+import com.example.demo.Services.UserService;
 import com.example.demo.Utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -18,14 +20,17 @@ import org.springframework.web.server.WebFilterChain;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.springframework.security.authentication.UsernamePasswordAuthenticationToken.authenticated;
 
 @Component
 public class JwtFilter implements Filter {
     private final JwtUtil jwtUtil;
-    public JwtFilter(JwtUtil jwtUtil) {
+    private final UserService userService;
+    public JwtFilter(JwtUtil jwtUtil, UserService userService) {
         this.jwtUtil = jwtUtil;
+        this.userService = userService;
     }
 
     @Override
@@ -41,8 +46,13 @@ public class JwtFilter implements Filter {
                     return;
                 }
                 Jws<Claims> jws = jwtUtil.parse(x.getValue());
+                Optional<User> user = userService.findUserById(Long.getLong(jws.getBody().getSubject()));
+                if (user.isEmpty()) {
+                    httpresponse.sendError(401, "invalid user");
+                    return;
+                }
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
-                UsernamePasswordAuthenticationToken upat =  UsernamePasswordAuthenticationToken.authenticated(jws.getBody().getSubject(), null, Collections.emptyList());
+                UsernamePasswordAuthenticationToken upat =  UsernamePasswordAuthenticationToken.authenticated(user.get(), null, Collections.emptyList());
                 context.setAuthentication(upat);
                 SecurityContextHolder.setContext(context);
                 chain.doFilter(httprequest, httpresponse);

@@ -18,17 +18,14 @@ public class User {
     @Setter
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "rating"
-    )
-    private List<Restaurant> ratedRestaurants;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
 
-    @ManyToMany
+    @OneToMany
     @JoinTable(
             name = "reservation"
     )
-    private List<Restaurant> reservationsByUser;
+    private List<Restaurant> reservationsByUser = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner")
     private List<Restaurant> ownedRestaurants = new ArrayList<>();
@@ -51,4 +48,14 @@ public class User {
     @Setter
     @NotBlank
     private String pass;
+
+    public User() {
+
+    }
+
+    public User(String name, String pass, String email) {
+        this.name = name;
+        this.pass = pass;
+        this.email = email;
+    }
 }

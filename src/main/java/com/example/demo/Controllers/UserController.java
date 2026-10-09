@@ -1,10 +1,13 @@
 package com.example.demo.Controllers;
 
-import com.example.demo.LoginDTO;
-import com.example.demo.UserService;
+import com.example.demo.DTOs.LoginDTO;
+import com.example.demo.Entities.User;
+import com.example.demo.Services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,4 +35,12 @@ public class UserController {
         userService.insertUser(loginDTO.name(), loginDTO.email(), loginDTO.pass());
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/username")
+    public ResponseEntity<String> nameChange(@RequestBody String newname) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.updateUsername(user, newname);
+        return ResponseEntity.ok("life is a joke gimmickmar @pokerstarsbrasil");
+    }
+
 }

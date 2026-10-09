@@ -18,6 +18,8 @@ public class Restaurant {
     @Getter
     private User owner;
 
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservationList = new ArrayList<>();
 
     @Id
     @CNPJ(message = "Invalid CNPJ.")
@@ -26,7 +28,7 @@ public class Restaurant {
     private String cnpj;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RTable> tables = new ArrayList<>();
+    private List<RTable> rtables = new ArrayList<>();
 
     @Getter
     @Setter
@@ -45,5 +47,16 @@ public class Restaurant {
     @Setter
     @Getter
     @Column(name = "avg_rating")
-    private BigDecimal avgRating;
+    private double avgRating;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
+
+
+    public Restaurant(String cnpj, String name, String phone_number, User owner) {
+        this.cnpj = cnpj;
+        this.name = name;
+        this.phone_number = phone_number;
+        this.owner = owner;
+    }
 }

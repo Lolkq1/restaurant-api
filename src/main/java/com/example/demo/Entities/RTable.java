@@ -29,7 +29,9 @@ public class RTable {
     @NotBlank
     private Long size;
 
-    @OneToMany(mappedBy = "rtable", orphanRemoval = true)
+    @OneToMany(mappedBy = "rTable", orphanRemoval = true)
+    // explicacao pq eu mesmo esqueci ai lembrei agr: ta one-to-many pq uma mesa pode ser reservada varias vezes dps da primeira vez,
+    // ja que eu nao pretendo apagar as reservas apenas deixa-las como inativas entao pra nao dar problema fica assim.
     List<Reservation> reservations = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

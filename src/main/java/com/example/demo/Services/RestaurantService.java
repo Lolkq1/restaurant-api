@@ -1,8 +1,10 @@
-package com.example.demo;
+package com.example.demo.Services;
 
 import com.example.demo.Entities.Restaurant;
 import com.example.demo.Entities.User;
+import com.example.demo.Repositories.RestaurantRepo;
 import jakarta.validation.Valid;
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,20 +17,16 @@ public class RestaurantService {
         this.restaurantRepo = restaurantRepo;
         this.userService = userService;
     }
-
-    public void registerRestaurant(@Valid RestaurantDTO restaurant) throws NullPointerException{
-        Restaurant restaurant1 = new Restaurant();
-        Optional<User> owner = userService.findUserById(restaurant.owner_id());
+    //
+    public void registerRestaurant(@Valid @CNPJ String cnpj, String name, String local, Long id) throws NullPointerException {
+        Optional<User> owner = userService.findUserById(id);
         if (owner.isEmpty()) {
             throw new NullPointerException("User not found");
         }
-        restaurant1.setOwner(owner.get());
-        restaurant1.setCnpj(restaurant.cnpj());
-        restaurant1.setLocal(restaurant.local());
-        restaurant1.setName(restaurant.name());
-        restaurantRepo.save(restaurant1);
+        restaurantRepo.save(new Restaurant(cnpj, name, local, owner.get()));
     }
     // mudar dps pra changeRestaurantProperty e abstrai pra nao ter q fazer 200 metodos
+    // colocar criterio p nome do restaurante dps
     public void changeRestaurantName(String cnpj, String newname) throws NullPointerException {
         Optional<Restaurant> restaurant = restaurantRepo.findByCnpj(cnpj);
         if (restaurant.isEmpty()) {
@@ -37,4 +35,5 @@ public class RestaurantService {
         restaurant.get().setName(newname);
         restaurantRepo.save(restaurant.get());
     }
+
 }

@@ -1,8 +1,6 @@
 package com.example.demo.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,5 +23,27 @@ public class Rating {
     @Setter
     @Getter
     @NotBlank
-    private BigDecimal rating;
+    private double rating;
+
+    @ManyToOne
+    @JoinTable(name = "user")
+    @JoinColumn(name = "user_id",
+    referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne
+    @JoinTable(name = "restaurant")
+    @JoinColumn(name = "res_cnpj",
+    referencedColumnName = "cnpj")
+    private Restaurant restaurant;
+
+    public Rating() {
+
+    }
+
+    public Rating(String res_cnpj, Long user_id, double rating) {
+        this.res_cnpj = res_cnpj;
+        this.user_id = user_id;
+        this.rating = rating;
+    }
 }
